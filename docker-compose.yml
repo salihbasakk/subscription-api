@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  php:
+    build: .
+    container_name: php-app
+    volumes:
+      - ./:/var/www/symfony
+      - ./docker/php/conf.d/default.ini:/usr/local/etc/php/conf.d/default.ini
+    depends_on:
+      - database
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=${RABBITMQ_HOST}
+      - RABBITMQ_PORT=${RABBITMQ_PORT}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASSWORD=${RABBITMQ_PASSWORD}
+  database:
+    image: mysql:8.0.28
+    platform: linux/x86_64
+    container_name: db-app
+    ports:
+      - '3307:3306'
+    environment:
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+    volumes:
+      - db-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+  rabbitmq:
+    image: rabbitmq:3.9
+    ports:
+      - "5672:5672"
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db-app
+      - PMA_PORT=3306
+      - UPLOAD_LIMIT=20M
+  nginx:
+    image: nginx:1.21.6-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      - NGINX_HOST=${NGINX_HOST}
+      - NGINX_PORT=${NGINX_PORT}
+    volumes:
+      - ./:/var/www/symfony:ro
+      - ./docker/nginx/templates:/etc/nginx/templates
+    depends_on:
+      - php
+volumes:
+  db-data:
