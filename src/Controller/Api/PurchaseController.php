@@ -17,7 +17,7 @@ class PurchaseController extends AbstractController
     public function purchase(PurchaseRequest $request, PurchaseService $purchaseService): JsonResponse
     {
         try {
-            $purchase = $purchaseService->purchase($request);
+            $purchase = $purchaseService->purchase($request->clientToken, $request->clientToken);
         } catch (Throwable $exception) {
             return $this->json(
                 [
