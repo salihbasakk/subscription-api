@@ -20,7 +20,7 @@ class Purchase extends BaseEntity
     private bool $status;
 
     #[ORM\Column(name: 'purchaseStatus', length: 100, nullable: false)]
-    private bool $purchaseStatus;
+    private string $purchaseStatus;
 
     #[ORM\Column(length: 200, nullable: false)]
     private string $receipt;
@@ -51,18 +51,18 @@ class Purchase extends BaseEntity
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isPurchaseStatus(): bool
+    public function getPurchaseStatus(): string
     {
         return $this->purchaseStatus;
     }
 
     /**
-     * @param bool $purchaseStatus
+     * @param string $purchaseStatus
      * @return Purchase
      */
-    public function setPurchaseStatus(bool $purchaseStatus): Purchase
+    public function setPurchaseStatus(string $purchaseStatus): Purchase
     {
         $this->purchaseStatus = $purchaseStatus;
         return $this;

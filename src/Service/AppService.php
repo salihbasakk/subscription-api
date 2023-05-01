@@ -6,6 +6,7 @@ use App\Entity\App;
 use App\Exception\ExceptionMessages;
 use App\Repository\AppRepository;
 use Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 class AppService
 {
@@ -24,7 +25,7 @@ class AppService
         $app = $this->appRepository->find($appId);
 
         if (!$app) {
-            throw new Exception(ExceptionMessages::APP_NOT_FOUND);
+            throw new Exception(ExceptionMessages::APP_NOT_FOUND, Response::HTTP_BAD_REQUEST);
         }
 
         return $app;

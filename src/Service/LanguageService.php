@@ -6,6 +6,7 @@ use App\Entity\Language;
 use App\Exception\ExceptionMessages;
 use App\Repository\LanguageRepository;
 use Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 class LanguageService
 {
@@ -24,7 +25,7 @@ class LanguageService
         $language = $this->languageRepository->findOneBy(['code' => $languageCode]);
 
         if (!$language) {
-            throw new Exception(ExceptionMessages::LANGUAGE_NOT_FOUND);
+            throw new Exception(ExceptionMessages::LANGUAGE_NOT_FOUND, Response::HTTP_BAD_REQUEST);
         }
 
         return $language;

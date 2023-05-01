@@ -6,6 +6,7 @@ use App\Entity\OperatingSystem;
 use App\Exception\ExceptionMessages;
 use App\Repository\OperatingSystemRepository;
 use Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 class OperatingSystemService
 {
@@ -24,7 +25,7 @@ class OperatingSystemService
         $operatingSystem = $this->operatingSystemRepository->findOneBy(['name' => $operatingSystem]);
 
         if (!$operatingSystem) {
-            throw new Exception(ExceptionMessages::OPERATING_SYSTEM_NOT_FOUND);
+            throw new Exception(ExceptionMessages::OPERATING_SYSTEM_NOT_FOUND, Response::HTTP_BAD_REQUEST);
         }
 
         return $operatingSystem;

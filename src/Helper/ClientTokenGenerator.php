@@ -8,6 +8,7 @@ class ClientTokenGenerator
 
     public static function generate(): string
     {
+        //It is now a random string. Using encryption algorithm or jwt token can be created.
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
 

@@ -12,6 +12,7 @@ use App\Repository\SubscriptionRepository;
 use DateTime;
 use DateInterval;
 use Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 class SubscriptionService
 {
@@ -34,7 +35,7 @@ class SubscriptionService
         }
 
         if ($device->getOs()->getName() !== $app->getOs()->getName()) {
-            throw new Exception(ExceptionMessages::DEVICE_APP_OS_DO_NOT_MATCH);
+            throw new Exception(ExceptionMessages::DEVICE_APP_OS_DO_NOT_MATCH, Response::HTTP_BAD_REQUEST);
         }
 
         $expireDate = new DateTime();
@@ -63,6 +64,6 @@ class SubscriptionService
             return $subscription;
         }
 
-        throw new Exception(ExceptionMessages::SUBSCRIPTION_NOT_FOUND);
+        throw new Exception(ExceptionMessages::SUBSCRIPTION_NOT_FOUND, Response::HTTP_BAD_REQUEST);
     }
 }
