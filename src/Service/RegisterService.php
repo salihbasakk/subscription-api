@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Controller\Api\Request\RegisterRequest;
 use Exception;
 
 class RegisterService
@@ -22,19 +21,19 @@ class RegisterService
     }
 
     /**
-     * @param RegisterRequest $request
+     * @param string $uid
+     * @param int $appId
+     * @param string $os
+     * @param string $language
      * @return string
      * @throws Exception
      */
-    public function processRegistration(RegisterRequest $request): string
+    public function processRegistration(string $uid, int $appId, string $os, string $language): string
     {
-        $uid = $request->uid;
-        $appId = $request->appId;
-
         $device = $this->deviceService->checkDeviceExist($uid);
 
         if (!$device) {
-            $device = $this->deviceService->createDevice($request);
+            $device = $this->deviceService->createDevice($uid, $os, $language);
         }
 
         $app = $this->appService->findAppById($appId);

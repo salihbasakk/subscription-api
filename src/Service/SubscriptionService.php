@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Controller\Api\Request\CheckSubscriptionRequest;
 use App\Entity\App;
 use App\Entity\Device;
 use App\Entity\Subscription;
@@ -56,9 +55,9 @@ class SubscriptionService
     /**
      * @throws Exception
      */
-    public function getSubscriptionByClientToken(CheckSubscriptionRequest $request): Subscription
+    public function getSubscriptionByClientToken(string $clientToken): Subscription
     {
-        $subscription = $this->subscriptionRepository->findOneBy(['clientToken' => $request->clientToken]);
+        $subscription = $this->subscriptionRepository->findOneBy(['clientToken' => $clientToken]);
 
         if ($subscription) {
             return $subscription;

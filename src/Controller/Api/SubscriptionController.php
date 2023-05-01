@@ -16,7 +16,7 @@ class SubscriptionController extends AbstractController
     public function register(CheckSubscriptionRequest $request, SubscriptionService $subscriptionService): JsonResponse
     {
         try {
-            $subscription = $subscriptionService->getSubscriptionByClientToken($request);
+            $subscription = $subscriptionService->getSubscriptionByClientToken($request->clientToken);
         } catch (Throwable $exception) {
             return $this->json(
                 [

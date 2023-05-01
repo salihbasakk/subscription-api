@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Controller\Api\Request\RegisterRequest;
 use App\Entity\Device;
 use App\Repository\DeviceRepository;
 use Exception;
@@ -31,12 +30,12 @@ class DeviceService
     /**
      * @throws Exception
      */
-    public function createDevice(RegisterRequest $request): Device
+    public function createDevice(string $uid, string $os, string $language): Device
     {
         $device = (new Device)
-            ->setUid($request->uid)
-            ->setLanguage($this->languageService->findLanguageByCode($request->language))
-            ->setOs($this->operatingSystemService->findOperatingSystemByName($request->os));
+            ->setUid($uid)
+            ->setOs($this->operatingSystemService->findOperatingSystemByName($os))
+            ->setLanguage($this->languageService->findLanguageByCode($language));
 
         $this->deviceRepository->save($device, true);
 

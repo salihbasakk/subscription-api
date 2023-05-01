@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Controller\Api\Request\PurchaseRequest;
 use App\Entity\Purchase;
 use App\Entity\Subscription;
 use App\Exception\ExceptionMessages;
@@ -28,15 +27,13 @@ class PurchaseService
     /**
      * @throws Exception
      */
-    public function purchase(PurchaseRequest $purchaseRequest): Purchase
+    public function purchase(string $clientToken, string $receipt): Purchase
     {
-        $subscription = $this->subscriptionRepository->findOneBy(['clientToken' => $purchaseRequest->clientToken]);
+        $subscription = $this->subscriptionRepository->findOneBy(['clientToken' => $clientToken]);
 
         if (!$subscription) {
             throw new Exception(ExceptionMessages::SUBSCRIPTION_NOT_FOUND, Response::HTTP_BAD_REQUEST);
         }
-
-        $receipt = $purchaseRequest->receipt;
 
         [$purchaseStatus, $status, $expireDate] = self::verifyFromProvider($subscription, $receipt);
 
@@ -48,7 +45,7 @@ class PurchaseService
 
         return $this->create(
             $subscription,
-            $purchaseRequest->receipt,
+            $receipt,
             $purchaseStatus,
             $status,
             $expireDate
