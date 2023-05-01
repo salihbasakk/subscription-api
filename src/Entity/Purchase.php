@@ -19,11 +19,14 @@ class Purchase extends BaseEntity
     #[ORM\Column(nullable: false)]
     private bool $status;
 
+    #[ORM\Column(name: 'purchaseStatus', length: 100, nullable: false)]
+    private bool $purchaseStatus;
+
     #[ORM\Column(length: 200, nullable: false)]
     private string $receipt;
 
-    #[ORM\Column(name: 'expireDate', type: Types::DATETIME_MUTABLE)]
-    private DateTimeInterface $expireDate;
+    #[ORM\Column(name: 'expireDate', type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?DateTimeInterface $expireDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'purchases')]
     #[ORM\JoinColumn(name: 'subscriptionId', nullable: false)]
@@ -32,7 +35,7 @@ class Purchase extends BaseEntity
     /**
      * @return bool
      */
-    public function isStatus(): bool
+    public function getStatus(): bool
     {
         return $this->status;
     }
@@ -44,6 +47,24 @@ class Purchase extends BaseEntity
     public function setStatus(bool $status): Purchase
     {
         $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPurchaseStatus(): bool
+    {
+        return $this->purchaseStatus;
+    }
+
+    /**
+     * @param bool $purchaseStatus
+     * @return Purchase
+     */
+    public function setPurchaseStatus(bool $purchaseStatus): Purchase
+    {
+        $this->purchaseStatus = $purchaseStatus;
         return $this;
     }
 
@@ -66,18 +87,18 @@ class Purchase extends BaseEntity
     }
 
     /**
-     * @return DateTimeInterface
+     * @return DateTimeInterface|null
      */
-    public function getExpireDate(): DateTimeInterface
+    public function getExpireDate(): ?DateTimeInterface
     {
         return $this->expireDate;
     }
 
     /**
-     * @param DateTimeInterface $expireDate
+     * @param DateTimeInterface|null $expireDate
      * @return Purchase
      */
-    public function setExpireDate(DateTimeInterface $expireDate): Purchase
+    public function setExpireDate(?DateTimeInterface $expireDate): Purchase
     {
         $this->expireDate = $expireDate;
         return $this;

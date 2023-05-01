@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Controller\Api\Request\RegisterRequest;
+use App\Service\CacheService;
 use App\Service\RegisterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,11 +13,27 @@ use Throwable;
 
 class RegisterController extends AbstractController
 {
+    const CACHE_KEY_PREFIX = 'device_and_app_';
+    const FIND_FOR_TTL = 60 * 60 * 24;
+
     #[Route('/register', name: 'register', methods: ['POST'])]
-    public function register(RegisterRequest $request, RegisterService $registerService): JsonResponse
-    {
+    public function register(
+        RegisterRequest $request,
+        CacheService $cacheService,
+        RegisterService $registerService
+    ): JsonResponse {
         try {
-            $clientToken = $registerService->processRegistration($request);
+            $uid = $request->uid;
+            $appId = $request->appId;
+
+            $cacheKey = self::CACHE_KEY_PREFIX . $uid . '_' . $appId;
+            $clientToken = $cacheService->getFromCache($cacheKey);
+
+            if ($clientToken === null) {
+                $clientToken = $registerService->processRegistration($request);
+            }
+
+            $cacheService->saveCache($cacheKey, $clientToken, self::FIND_FOR_TTL);
         } catch (Throwable $exception) {
             return $this->json(
                 [

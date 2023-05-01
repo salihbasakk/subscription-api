@@ -33,9 +33,13 @@ class DeviceService
      */
     public function createDevice(RegisterRequest $request): Device
     {
-        return (new Device)
+        $device = (new Device)
             ->setUid($request->uid)
             ->setLanguage($this->languageService->findLanguageByCode($request->language))
             ->setOs($this->operatingSystemService->findOperatingSystemByName($request->os));
+
+        $this->deviceRepository->save($device, true);
+
+        return $device;
     }
 }

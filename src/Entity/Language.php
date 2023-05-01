@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\LanguageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
+#[UniqueConstraint(name: 'languageCodeIdx', columns: ['code'])]
 #[ORM\Index(columns: ['code'], name: 'codeIdx')]
 #[ORM\HasLifecycleCallbacks]
 class Language extends BaseEntity

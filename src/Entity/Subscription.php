@@ -8,8 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
+#[UniqueConstraint(name: 'deviceAppIdx', columns: ['deviceId', 'appId'])]
+#[UniqueConstraint(name: 'clientTokenIdx', columns: ['clientToken'])]
 #[ORM\Index(columns: ['clientToken'], name: 'clientTokenIdx')]
 #[ORM\Index(columns: ['deviceId', 'appId', 'status'], name: 'activeDeviceAppsIdx')]
 #[ORM\HasLifecycleCallbacks]
