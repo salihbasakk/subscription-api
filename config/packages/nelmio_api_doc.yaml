@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Subscription Management API
+            description: Subscribe different device and apps
+            version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/api(?!/doc$)
