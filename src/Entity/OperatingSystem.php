@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[ORM\Entity(repositoryClass: OperatingSystemRepository::class)]
-#[UniqueConstraint(name: 'osNameIdx', columns: ['name'])]
+#[UniqueConstraint(name: 'uniqueNameIdx', columns: ['name'])]
 #[ORM\Index(columns: ['name'], name: 'nameIdx')]
 #[ORM\HasLifecycleCallbacks]
 class OperatingSystem extends BaseEntity

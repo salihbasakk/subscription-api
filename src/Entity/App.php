@@ -14,15 +14,15 @@ class App extends BaseEntity
     #[ORM\Column(length: 50, nullable: false)]
     private string $name;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(name: 'osId', nullable: false)]
+    private OperatingSystem $os;
+
     #[ORM\Column(length: 100, nullable: false)]
     private string $username;
 
     #[ORM\Column(length: 100, nullable: false)]
     private string $password;
-
-    #[ORM\ManyToOne(inversedBy: 'app')]
-    #[ORM\JoinColumn(name: 'deviceId', nullable: true)]
-    private ?Device $device = null;
 
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: Subscription::class)]
     private Collection $subscriptions;
@@ -47,6 +47,24 @@ class App extends BaseEntity
     public function setName(string $name): App
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return OperatingSystem
+     */
+    public function getOs(): OperatingSystem
+    {
+        return $this->os;
+    }
+
+    /**
+     * @param OperatingSystem $os
+     * @return App
+     */
+    public function setOs(OperatingSystem $os): App
+    {
+        $this->os = $os;
         return $this;
     }
 
@@ -87,27 +105,9 @@ class App extends BaseEntity
     }
 
     /**
-     * @return Device|null
-     */
-    public function getDevice(): ?Device
-    {
-        return $this->device;
-    }
-
-    /**
-     * @param Device|null $device
-     * @return App
-     */
-    public function setDevice(?Device $device): App
-    {
-        $this->device = $device;
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Subscription>
      */
-    public function getSubscription(): Collection
+    public function getSubscriptions(): Collection
     {
         return $this->subscriptions;
     }

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use DateTimeInterface;
 
 #[ORM\Entity(repositoryClass: PurchaseRepository::class)]
-#[ORM\Index(columns: ['expireDate', 'status'], name: 'expireDateIdx')]
+#[ORM\Index(columns: ['expireDate', 'purchaseStatus'], name: 'expireDateIdx')]
 #[ORM\HasLifecycleCallbacks]
 class Purchase extends BaseEntity
 {

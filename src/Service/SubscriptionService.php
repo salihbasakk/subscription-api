@@ -22,12 +22,19 @@ class SubscriptionService
         $this->subscriptionRepository = $subscriptionRepository;
     }
 
+    /**
+     * @throws Exception
+     */
     public function subscribeDeviceAndApp(Device $device, App $app): Subscription
     {
         $subscription = $this->subscriptionRepository->findOneBy(['device' => $device, 'app' => $app]);
 
         if ($subscription) {
             return $subscription;
+        }
+
+        if ($device->getOs()->getName() !== $app->getOs()->getName()) {
+            throw new Exception(ExceptionMessages::DEVICE_APP_OS_DO_NOT_MATCH);
         }
 
         $expireDate = new DateTime();

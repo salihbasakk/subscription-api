@@ -11,8 +11,8 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
-#[UniqueConstraint(name: 'deviceAppIdx', columns: ['deviceId', 'appId'])]
-#[UniqueConstraint(name: 'clientTokenIdx', columns: ['clientToken'])]
+#[UniqueConstraint(name: 'uniqueDeviceAppIdx', columns: ['deviceId', 'appId'])]
+#[UniqueConstraint(name: 'uniqueClientTokenIdx', columns: ['clientToken'])]
 #[ORM\Index(columns: ['clientToken'], name: 'clientTokenIdx')]
 #[ORM\Index(columns: ['deviceId', 'appId', 'status'], name: 'activeDeviceAppsIdx')]
 #[ORM\HasLifecycleCallbacks]

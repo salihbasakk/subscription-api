@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 #[ORM\Entity(repositoryClass: DeviceRepository::class)]
-#[UniqueConstraint(name: 'deviceIdx', columns: ['uid'])]
+#[UniqueConstraint(name: 'uniqueUidIdx', columns: ['uid'])]
 #[ORM\Index(columns: ['uid'], name: 'uidIdx')]
 #[ORM\HasLifecycleCallbacks]
 class Device extends BaseEntity
@@ -25,15 +25,11 @@ class Device extends BaseEntity
     #[ORM\JoinColumn(name: 'osId', nullable: false)]
     private OperatingSystem $os;
 
-    #[ORM\OneToMany(mappedBy: 'device', targetEntity: App::class)]
-    private Collection $apps;
-
     #[ORM\OneToMany(mappedBy: 'subscription', targetEntity: Subscription::class)]
     private Collection $subscriptions;
 
     public function __construct()
     {
-        $this->apps = new ArrayCollection();
         $this->subscriptions = new ArrayCollection();
     }
 
@@ -88,35 +84,6 @@ class Device extends BaseEntity
     public function setOs(OperatingSystem $os): Device
     {
         $this->os = $os;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, App>
-     */
-    public function getApp(): Collection
-    {
-        return $this->apps;
-    }
-
-    public function addApp(App $app): self
-    {
-        if (!$this->apps->contains($app)) {
-            $this->apps->add($app);
-            $app->setDevice($this);
-        }
-
-        return $this;
-    }
-
-    public function removeApp(App $app): self
-    {
-        if ($this->apps->removeElement($app)) {
-            if ($app->getDevice() === $this) {
-                $app->setDevice(null);
-            }
-        }
-
         return $this;
     }
 
