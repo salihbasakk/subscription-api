@@ -60,14 +60,14 @@ You can either use postman collection subscriptionApi.postman_collection.json / 
 - Considering the memory consumption of your system, you can update the configuration file by increasing the number of numprocs to process the data in the queue faster.
 - You can find it /docker/supervisor/conf.d
 
-[program:update-expire-date]
-command=php bin/console update-expire-date
-numprocs=1
-directory=/var/www/symfony
-autostart=true
-autorestart=true
-user=root
-stdout_logfile=/var/www/symfony/var/log/update-expire-date-out.log
+[program:update-expire-date]  <br />
+command=php bin/console update-expire-date  <br />
+numprocs=1 <br />
+directory=/var/www/symfony  <br />
+autostart=true  <br />
+autorestart=true  <br />
+user=root  <br />
+stdout_logfile=/var/www/symfony/var/log/update-expire-date-out.log  <br />
 stderr_logfile=/var/www/symfony/var/log/update-expire-date-err.log
 
 
