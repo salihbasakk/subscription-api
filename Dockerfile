@@ -36,11 +36,25 @@ RUN ln -snf /usr/share/zoneinfo/Europe/Istanbul /etc/localtime && echo Europe/Is
     && "date"
 
 COPY . .
+
+RUN composer install
+
+#CRON
+COPY docker/crontab /etc/cron.d/pending-purchases-cron
+
+RUN chmod 0644 /etc/cron.d/pending-purchases-cron
+RUN crontab /etc/cron.d/pending-purchases-cron
+
+COPY docker/start-cron.sh /start-cron.sh
+
+RUN chmod +x /start-cron.sh
+
+CMD ["/start-cron.sh"]
+
+#SUPERVISOR
 COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/supervisor/conf.d /etc/supervisor/conf.d
 
 RUN mkdir -p /var/run/supervisor && touch /var/run/supervisor.sock
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]
-
-RUN composer install
