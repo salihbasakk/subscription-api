@@ -2,10 +2,9 @@
 
 namespace App\Interface;
 
-use App\Entity\App;
 use Symfony\Component\HttpFoundation\Response;
 
 interface ProviderInterface
 {
-    public function verifyReceipt(App $app, string $receipt): Response;
+    public function verifyReceipt(string $username, string $password, string $receipt): Response;
 }

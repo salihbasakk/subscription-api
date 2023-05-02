@@ -35,7 +35,12 @@ class PurchaseService
             throw new Exception(ExceptionMessages::SUBSCRIPTION_NOT_FOUND, Response::HTTP_BAD_REQUEST);
         }
 
-        [$purchaseStatus, $status, $expireDate] = self::verifyFromProvider($subscription, $receipt);
+        [$purchaseStatus, $status, $expireDate] = self::verifyFromProvider(
+            $subscription->getApp()->getOs()->getName(),
+            $receipt,
+            $subscription->getApp()->getUsername(),
+            $subscription->getApp()->getPassword(),
+        );
 
         $existPurchase = $this->purchaseRepository->findOneBy(['receipt' => $receipt]);
 
@@ -90,17 +95,19 @@ class PurchaseService
      * @throws Exception
      */
     public function verifyFromProvider(
-        Subscription $subscription,
-        string $receipt
+        string $os,
+        string $receipt,
+        string $username,
+        string $password
     ): array {
         $purchaseStatus = Purchase::STATUS_PENDING;
         $expireDate = null;
         $status = false;
 
-        $provider = ProviderFactory::create($subscription->getDevice()->getOs()->getName());
+        $provider = ProviderFactory::create($os);
 
         /** @var Response $response */
-        $response = $provider->verifyReceipt($subscription->getApp(), $receipt);
+        $response = $provider->verifyReceipt($username, $password, $receipt);
 
         if ($response->getStatusCode() === Response::HTTP_OK) {
             $payload = json_decode($response->getContent(), true);
