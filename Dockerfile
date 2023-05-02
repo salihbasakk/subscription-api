@@ -18,11 +18,15 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libmemcached-dev \
     libjpeg62-turbo-dev \
-    libfreetype6-dev
+    libfreetype6-dev \
+    libsocket6-perl \
+    libsocket6-perl \
+    libio-socket-inet6-perl \
+    libio-socket-ssl-perl
 
 RUN pecl install xdebug amqp
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install pdo pdo_mysql intl exif mbstring -j$(nproc) gd zip
+RUN docker-php-ext-install pdo pdo_mysql intl exif mbstring sockets -j$(nproc) gd zip
 RUN docker-php-ext-enable xdebug amqp
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -34,5 +38,9 @@ RUN ln -snf /usr/share/zoneinfo/Europe/Istanbul /etc/localtime && echo Europe/Is
 COPY . .
 COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 COPY docker/supervisor/conf.d /etc/supervisor/conf.d
+
+RUN mkdir -p /var/run/supervisor && touch /var/run/supervisor.sock
+
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]
 
 RUN composer install
