@@ -1,0 +1,1 @@
+0 * * * * root /usr/bin/php /var/www/symfony/bin/console send-queue-pending-purchases >> /var/log/cron.log 2>&1
