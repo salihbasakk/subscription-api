@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "fae8c51f-313f-4a35-b079-e4df11b0c813",
+		"name": "Subscription API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14135487"
+	},
+	"item": [
+		{
+			"name": "Device Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"uid\": \"abcdefghıijklmn12345\",\n    \"language\": \"TR\",\n    \"os\": \"ios\",\n    \"appId\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost/api/v1/register",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clientToken\": \"OSM0FaKBip030sha3jacwUZEz1rSTPz833YQTKwC18iMA8tItND4BvYFSZxqm6YB7n7avrIXAGNCawL6LeUOulOPSCCeGUxoBPSn\",\n    \"receipt\": \"12042491204192412\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost/api/v1/purchase",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Subscription",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clientToken\": \"OSM0FaKBip030sha3jacwUZEz1rSTPz833YQTKwC18iMA8tItND4BvYFSZxqm6YB7n7avrIXAGNCawL6LeUOulOPSCCeGUxoBPSn\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost/api/v1/check-subscription",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"api",
+						"v1",
+						"check-subscription"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
