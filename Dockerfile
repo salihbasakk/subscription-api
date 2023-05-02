@@ -49,7 +49,7 @@ COPY docker/start-cron.sh /start-cron.sh
 
 RUN chmod +x /start-cron.sh
 
-CMD ["/start-cron.sh"]
+#CMD ["/start-cron.sh"]
 
 #SUPERVISOR
 COPY docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
@@ -57,4 +57,4 @@ COPY docker/supervisor/conf.d /etc/supervisor/conf.d
 
 RUN mkdir -p /var/run/supervisor && touch /var/run/supervisor.sock
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]
+#CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]
