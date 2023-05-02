@@ -38,4 +38,14 @@ class PurchaseRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findPendingPurchases()
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->where('p.purchaseStatus = :purchaseStatus')
+            ->setParameter('purchaseStatus', Purchase::STATUS_PENDING)
+            ->getQuery()
+            ->getResult();
+    }
 }

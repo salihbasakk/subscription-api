@@ -11,7 +11,7 @@ use DateTimeZone;
 
 class Ios implements ProviderInterface
 {
-    public function verifyReceipt(App $app, string $receipt): Response
+    public function verifyReceipt(string $username, string $password, string $receipt): Response
     {
         //Suppose we use $app credentials but this service mock at the moment
         $lastCharacter = substr($receipt, -1);

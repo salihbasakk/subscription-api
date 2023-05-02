@@ -28,16 +28,22 @@ services:
       - db-data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
   rabbitmq:
-    image: rabbitmq:3.9
+    image: rabbitmq:3.9.7-management-alpine
+    container_name: rabbitmq-app
     ports:
-      - "5672:5672"
+      - '15672:15672'
+      - '5672:5672'
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_VHOST}
   phpmyadmin:
     image: phpmyadmin
     restart: always
     depends_on:
       - database
     ports:
-      - 8080:80
+      - '8080:80'
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=db-app
